@@ -71,6 +71,6 @@ Possible improvements to the solution could be :
 
 ---
 
-**Has been a fun project.  Very intereting.** 				  ~   Saravanan Moorthyrajan
+**Has been a fun project.  Very interesting.** 				  ~   Saravanan Moorthyrajan
 
 ---
