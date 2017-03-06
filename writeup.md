@@ -25,7 +25,7 @@ The goals / steps of this project are the following:
 
 ###1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
 
-My pipeline consisted of the below steps :
+My pipeline consists of the below steps :
 
 1.  Convert image to grayscale
 1.  Apply Gaussian blue to smoothen the image
