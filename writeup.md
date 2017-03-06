@@ -16,7 +16,7 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./test_images/solidWhiteCurve.jpg "Original Image"
-[image2]: ./test_images/Output1_solidWhiteCurve.jpg "Image with raw lines"
+[image2]: ./test_images/Output1_solidWhiteCurve.jpg "Image with rough lines"
 [image3]: ./test_images/Output2_solidWhiteCurve.jpg "Image with complete lines"
 
 ---
@@ -25,14 +25,14 @@ The goals / steps of this project are the following:
 
 ###1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
 
-My pipeline consisted of the below 5 steps :
+My pipeline consisted of the below steps :
 
 1.  Convert image to grayscale
 1.  Apply Gaussian blue to smoothen the image
 1.  Identify edges using Canny Edge detection
 1.  Create a mask to mark the region of interest
 1.  Identify the co-ordinates for lane lines using edges through Hough's transform
-1.  Marking the lines using the above co-ordinates will yield two edge per lane line.  Also broken lane lines will be segmented.
+1.  Marking the lines using the above co-ordinates will yield two rough lines per lane line with no solid filling.  Also if the lane lines are broken, the rough lines will be segmented as well.
 1.  In order to arrive at a single solid line, the below approach has been used :
 	1. Determine the slope and intercept for a given co-ordinate using the np.polyfit function
 	1. Filter outliers by dropping near vertical or horizontal lines.  Constraint that has been used is 0.01 < slope < 10.
@@ -42,7 +42,7 @@ My pipeline consisted of the below 5 steps :
 	1. Use cv2.addWeighted to overlay the identified lanes on top of the original image with transparency
 
 
-### Image samples : Original image, Image with raw lines and Image with solid lines 
+### Image samples : _Original image_,   _Image with rough lines_   and   _Image with solid lines_ 
 
 ![alt text][image1] ![alt text][image2] ![alt text][image3]
 
@@ -50,13 +50,24 @@ My pipeline consisted of the below 5 steps :
 ###2. Potential shortcomings with my current pipeline
 
 
-One potential shortcoming would be what would happen when ... 
+Below are the short comings with the current implementation : 
 
-Another shortcoming could be ...
+1. Have used hard-coded values for mask boundaries.  Though it works well for the provided videos, not sure if it will be suitable for all situations.
+1. Have used hard-coded values for y co-ordinates (330 and 539) to determine the x values using the average slope and intecept. Again, it works well for the provided videos, not sure if it will be suitable for all situations.
+1. Real life situation can have strong shadows cast by railings or a passing by truck, which the algorithm and mistake for lane edges.
+1. The implementation works well for straight lane lines.  Working on the challenge video with curved lines.
 
 
 ###3. Suggest possible improvements to your pipeline
 
-A possible improvement would be to ...
+Possible improvements to the solution could be :
 
-Another potential improvement could be to ...
+1. Auto calculation of mask boundaries, leading to auto calculation of line co-ordinates
+1. Being able to plot curved lines to handle curved lanes
+1. Have used a constraint on slope (>0.01 & < 10) to filter out noise. Need a more scientific approach to remove outliers.
+
+---
+
+**Has been a fun project.  Very intereting.**
+
+---
