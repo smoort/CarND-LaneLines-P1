@@ -47,6 +47,7 @@ My pipeline consisted of the below steps :
 ![alt text][image1] ![alt text][image2] ![alt text][image3]
 
 
+
 ###2. Potential shortcomings with my current pipeline
 
 
@@ -58,7 +59,8 @@ Below are the short comings with the current implementation :
 1. The implementation works well for straight lane lines.  Working on the challenge video with curved lines.
 
 
-###3. Suggest possible improvements to your pipeline
+
+###3. Possible improvements to my pipeline
 
 Possible improvements to the solution could be :
 
@@ -66,8 +68,9 @@ Possible improvements to the solution could be :
 1. Being able to plot curved lines to handle curved lanes
 1. Have used a constraint on slope (>0.01 & < 10) to filter out noise. Need a more scientific approach to remove outliers.
 
+
 ---
 
-**Has been a fun project.  Very intereting.**
+**Has been a fun project.  Very intereting.**                                              ~   Saravanan Moorthyrajan
 
 ---
