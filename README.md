@@ -3,10 +3,10 @@
 ## Writeup on Finding Lanes Lines project by *Saravanan Moorthyrajan*
 
 
-### First Revision 18 Mar 2017 - Changes to handle Challenge video
-### - Enhanced filters to handle shadows and tyre marks on roads
-### - Removed hard coding of mask co-ordinates
-### - Linked previous clip data to current clip data to provide reference
+**First Revision (18 Mar 2017) - Changes to handle Challenge video
+- Enhanced filters to handle shadows and tyre marks on roads
+- Removed hard coding of mask co-ordinates
+- Linked previous clip data to current clip data to provide reference
 
 ---
 
