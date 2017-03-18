@@ -3,7 +3,7 @@
 ## Writeup on Finding Lanes Lines project by *Saravanan Moorthyrajan*
 
 
-**First Revision (18 Mar 2017) - Changes to handle Challenge video
+**First Revision (18 Mar 2017) - Changes to handle Challenge video**
 - Enhanced filters to handle shadows and tyre marks on roads
 - Removed hard coding of mask co-ordinates
 - Linked previous clip data to current clip data to provide reference
@@ -31,7 +31,7 @@ The goals / steps of this project are the following:
 
 ### 1. Description of my pipeline
 
-My pipeline consists of the below steps :
+The pipeline consists of the below steps :
 
 1.  Convert image to grayscale
 1.  Apply Gaussian blur to smoothen the image
