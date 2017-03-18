@@ -1,13 +1,13 @@
-#**Finding Lane Lines on the Road** 
+# **Finding Lane Lines on the Road** 
 
-##Writeup by Saravanan Moorthyrajan
+## Writeup by Saravanan Moorthyrajan
 
-###Below is the write-up on my finding lanes lines project.
+### Below is the write-up of my finding lanes lines project.
 ###
-###Revised submission to include Challenge video
-###	- Enhanced filters to handle shadows and tyre marks on roads
-###	- Removed hard coding of mask co-ordinates
-###	- Linked previous clip data to current clip data to provide reference
+### Revised submission to include Challenge video
+### - Enhanced filters to handle shadows and tyre marks on roads
+### - Removed hard coding of mask co-ordinates
+### - Linked previous clip data to current clip data to provide reference
 
 ---
 
@@ -20,17 +20,17 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./test_images/Challenge1.jpg "First Shadow"
-[image2]: ./test_images/Challenge2.jpg "Shadow to White road"
-[image3]: ./test_images/Challenge3.jpg "White road"
-[image4]: ./test_images/Challenge4.jpg "White road to Shadow"
-[image5]: ./test_images/Challenge5.jpg "Second Shadow"
+[image1]: ./test_images/Challenge1.png "First Shadow"
+[image2]: ./test_images/Challenge2.png "Shadow to White road"
+[image3]: ./test_images/Challenge3.png "White road"
+[image4]: ./test_images/Challenge4.png "White road to Shadow"
+[image5]: ./test_images/Challenge5.png "Second Shadow"
 
 ---
 
 ### Reflection
 
-###1. Description of my pipeline
+### 1. Description of my pipeline
 
 My pipeline consists of the below steps :
 
@@ -62,14 +62,14 @@ My pipeline consists of the below steps :
 
 
 
-###2. Below are the short comings with the current implementation : 
+### 2. Below are the short comings with the current implementation : 
 
 1. Have only used straight lines which do not track curves in the road.
 1. Yellow marking on white roads are very difficult to identify.  Reducing canny edge low_threshold adds a lot of noise to the image
 1. Tyre marks on white roads is adding to noise
 
 
-###3. Possible improvements to the solution could be :
+### 3. Possible improvements to the solution could be :
 
 1. Ability able to plot curved lines to handle curved lane
 1. Ability to identify yellow lanes on white road better
