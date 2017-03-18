@@ -3,6 +3,11 @@
 ##Writeup by Saravanan Moorthyrajan
 
 ###Below is the write-up on my finding lanes lines project.
+###
+###Revised submission to include Challenge video
+###	- Enhanced filters to handle shadows and tyre marks on roads
+###	- Removed hard coding of mask co-ordinates
+###	- Linked previous clip data to current clip data to provide reference
 
 ---
 
@@ -15,15 +20,17 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./test_images/solidWhiteCurve.jpg "Original Image"
-[image2]: ./test_images/Output1_solidWhiteCurve.jpg "Image with rough lines"
-[image3]: ./test_images/Output2_solidWhiteCurve.jpg "Image with complete lines"
+[image1]: ./test_images/Challenge1.jpg "First Shadow"
+[image2]: ./test_images/Challenge2.jpg "Shadow to White road"
+[image3]: ./test_images/Challenge3.jpg "White road"
+[image4]: ./test_images/Challenge4.jpg "White road to Shadow"
+[image5]: ./test_images/Challenge5.jpg "Second Shadow"
 
 ---
 
 ### Reflection
 
-###1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
+###1. Description of my pipeline
 
 My pipeline consists of the below steps :
 
@@ -31,42 +38,42 @@ My pipeline consists of the below steps :
 1.  Apply Gaussian blur to smoothen the image
 1.  Identify edges using Canny Edge detection
 1.  Create a mask to mark the region of interest
+1.  Lines with slope < 0 are considered part of Left lane and slope > 0 are considered part of right lane.
 1.  Identify the co-ordinates for lane lines using edges through Hough transform
-1.  Marking the lines using the above co-ordinates will yield two rough lines per lane line with no solid filling.  Also if the lane lines are broken, the rough lines will be segmented as well.
-1.  In order to arrive at a single solid line, the below approach has been used :
-	1. Determine the slope and intercept for a given co-ordinate using the np.polyfit function
-	1. Filter outliers by dropping near vertical or horizontal lines.  Constraint that has been used is 0.01 < slope < 10 (both negative and positive values).
-	1. Calculate the average slope and intercept seperately for the left and right lanes.  Left lanes can be identified by slope < 0.
-	1. Find the top and bottom x co-ordinates for left and right lanes using their respective average slope, average intercept and y (330, 539 for top and bottom respectively)
-	1. Plot the left and right solid lines in red using a thickness of 10.
-	1. Use cv2.addWeighted to overlay the identified lanes on top of the original image with transparency
+1.  Apply the following filters :
+    1. Lines with slope^2 outside the range of 0.1 and 100 are filtered out as horizontal lines
+    1. Lines with slope < 0 (left lane) but lying to the right of center are filtered
+    1. Lines with slope > 0 (right lane) but lying to the left of center are filtered
+    1. Lines with slope & intercept beyond the allowed variance from previous clip slope & intercept are filtered.
+1.  The average slope and intercept seperately for the left and right lanes.
+1.  The highest y value of valid lines across clips is considered the bottom y co-ordinate of the lanes
+1.  The top y cordinate is calculated using the image height and a factor.
+1.  Find the top and bottom x co-ordinates for left and right lanes using their respective average slope, average intercept and y
+1.  Plot the left and right solid lines in red using a thickness of 10.
+1.  Use cv2.addWeighted to overlay the identified lanes on top of the original image with transparency
 
 
-### Image samples : *Original image*,   *Image with rough lines*   and   *Image with solid lines* 
+### Image samples : In the below diagrams, 
+1.  *Cream lines are detected as horizontal lines and filtered out*
+1.  *Blue lines are detected as shadows, tyre marks and other noise which are filtered out*
+1.  *Green lines are considered actual lane lines and are averaged out and extrapolated to draw the lane lines*
 
-![alt text][image1] ![alt text][image2] ![alt text][image3]
-
-
-
-###2. Potential shortcomings with my current pipeline
-
-
-Below are the short comings with the current implementation : 
-
-1. Have used hard-coded values for mask boundaries.  Though it works well for the provided videos, not sure if it will be suitable for all situations.
-1. Have used hard-coded values for y co-ordinates (330 and 539) for extrapolation to determine the x values using the average slope and intecept. Again, it works well for the provided videos, not sure if it will be suitable for all situations.
-1. Real life situation can have strong shadows cast by railings or a passing by truck, which the algorithm can mistake for lane edges.
-1. The implementation works well for straight lane lanes.  Working on the challenge video with curved lanes.
+![alt text][image1] ![alt text][image2] ![alt text][image3] ![alt text][image4] ![alt text][image5]
 
 
 
-###3. Possible improvements to my pipeline
+###2. Below are the short comings with the current implementation : 
 
-Possible improvements to the solution could be :
+1. Have only used straight lines which do not track curves in the road.
+1. Yellow marking on white roads are very difficult to identify.  Reducing canny edge low_threshold adds a lot of noise to the image
+1. Tyre marks on white roads is adding to noise
 
-1. Auto calculation of mask boundaries, leading to auto calculation of y co-ordinates that can be used for extrapolation
-1. Being able to plot curved lines to handle curved lanes
-1. Have used a constraint on slope (>0.01 & < 10) to filter out noise. Need a more scientific approach to remove outliers.
+
+###3. Possible improvements to the solution could be :
+
+1. Ability able to plot curved lines to handle curved lane
+1. Ability to identify yellow lanes on white road better
+1. A more precise way to filter out tyre markings and shadows
 
 
 ---
