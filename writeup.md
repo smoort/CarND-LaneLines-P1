@@ -51,7 +51,7 @@ The pipeline consists of the below steps :
 1.  Plot the left and right solid lines in red using a thickness of 10.
 1.  Overlay the identified lanes on top of the original image with transparency
 
-### Image samples : In the below diagrams, 
+#### Image samples : Below are some images from the video with good and bad lines highlighted
 1.  *Cream lines are detected as horizontal lines and filtered out*
 1.  *Blue lines are detected as shadows, tyre marks and other noise which are filtered out*
 1.  *Green lines are considered actual lane lines and are averaged out and extrapolated to draw the lane lines*
