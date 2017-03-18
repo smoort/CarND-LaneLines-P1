@@ -1,53 +1,80 @@
-#**Finding Lane Lines on the Road** 
-[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
+# **Finding Lane Lines on the Road** 
 
-<img src="laneLines_thirdPass.jpg" width="480" alt="Combined Image" />
+## Writeup on Finding Lanes Lines project by *Saravanan Moorthyrajan*
 
-Overview
+
+### First Revision 18 Mar 2017 - Changes to handle Challenge video
+### - Enhanced filters to handle shadows and tyre marks on roads
+### - Removed hard coding of mask co-ordinates
+### - Linked previous clip data to current clip data to provide reference
+
 ---
 
-When we drive, we use our eyes to decide where to go.  The lines on the road that show us where the lanes are act as our constant reference for where to steer the vehicle.  Naturally, one of the first things we would like to do in developing a self-driving car is to automatically detect lane lines using an algorithm.
+**Finding Lane Lines on the Road**
 
-In this project you will detect lane lines in images using Python and OpenCV.  OpenCV means "Open-Source Computer Vision", which is a package that has many useful tools for analyzing images.  
-
-To complete the project, two files will be submitted: a file containing project code and a file containing a brief write up explaining your solution. We have included template files to be used both for the [code](https://github.com/udacity/CarND-LaneLines-P1/blob/master/P1.ipynb) and the [writeup](https://github.com/udacity/CarND-LaneLines-P1/blob/master/writeup_template.md).The code file is called P1.ipynb and the writeup template is writeup_template.md 
-
-To meet specifications in the project, take a look at the requirements in the [project rubric](https://review.udacity.com/#!/rubrics/322/view)
+The goals / steps of this project are the following:
+* Make a pipeline that finds lane lines on the road
+* Reflect on your work in a written report
 
 
-Creating a Great Writeup
----
-For this project, a great writeup should provide a detailed response to the "Reflection" section of the [project rubric](https://review.udacity.com/#!/rubrics/322/view). There are three parts to the reflection:
+[//]: # (Image References)
 
-1. Describe the pipeline
+[image1]: ./test_images/Challenge1.png "First Shadow"
+[image2]: ./test_images/Challenge2.png "Shadow to White road"
+[image3]: ./test_images/Challenge3.png "White road"
+[image4]: ./test_images/Challenge4.png "White road to Shadow"
+[image5]: ./test_images/Challenge5.png "Second Shadow"
 
-2. Identify any shortcomings
-
-3. Suggest possible improvements
-
-We encourage using images in your writeup to demonstrate how your pipeline works.  
-
-All that said, please be concise!  We're not looking for you to write a book here: just a brief description.
-
-You're not required to use markdown for your writeup.  If you use another method please just submit a pdf of your writeup. Here is a link to a [writeup template file](https://github.com/udacity/CarND-LaneLines-P1/blob/master/writeup_template.md). 
-
-
-The Project
 ---
 
-## If you have already installed the [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) you should be good to go!   If not, you should install the starter kit to get started on this project. ##
+### Reflection
 
-**Step 1:** Set up the [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) if you haven't already.
+### 1. Description of my pipeline
 
-**Step 2:** Open the code in a Jupyter Notebook
+My pipeline consists of the below steps :
 
-You will complete the project code in a Jupyter notebook.  If you are unfamiliar with Jupyter Notebooks, check out <A HREF="https://www.packtpub.com/books/content/basics-jupyter-notebook-and-python" target="_blank">Cyrille Rossant's Basics of Jupyter Notebook and Python</A> to get started.
+1.  Convert image to grayscale
+1.  Apply Gaussian blur to smoothen the image
+1.  Identify edges using Canny Edge detection
+1.  Create a mask to mark the region of interest
+1.  Identify the co-ordinates for lane lines using edges through Hough transform
+1.  Lines with slope < 0 are considered part of Left lane and slope > 0 are considered part of right lane.
+1.  For each line identified through Hough transform, apply the following filters :
+    1. Lines with slope^2 outside the range of 0.1 and 100 are filtered out as horizontal lines
+    1. Lines with slope < 0 (left lane) but lying to the right of center are filtered
+    1. Lines with slope > 0 (right lane) but lying to the left of center are filtered
+    1. Lines with slope & intercept beyond the allowed variance from previous clip slope & intercept are filtered.
+1.  Calculate the mean slope and intercept seperately for the left and right lanes.
+1.  The highest y value of valid lines across clips is considered the bottom y co-ordinate of the lanes
+1.  The top y cordinate is calculated using the image height and a predetermined factor.
+1.  Find the top and bottom x co-ordinates for left and right lanes using their respective average slope, average intercept and y
+1.  Plot the left and right solid lines in red using a thickness of 10.
+1.  Overlay the identified lanes on top of the original image with transparency
 
-Jupyter is an Ipython notebook where you can run blocks of code and see results interactively.  All the code for this project is contained in a Jupyter notebook. To start Jupyter in your browser, use terminal to navigate to your project directory and then run the following command at the terminal prompt (be sure you've activated your Python 3 carnd-term1 environment as described in the [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) installation instructions!):
+### Image samples : In the below diagrams, 
+1.  *Cream lines are detected as horizontal lines and filtered out*
+1.  *Blue lines are detected as shadows, tyre marks and other noise which are filtered out*
+1.  *Green lines are considered actual lane lines and are averaged out and extrapolated to draw the lane lines*
 
-`> jupyter notebook`
+![alt text][image1] ![alt text][image2] ![alt text][image3] ![alt text][image4] ![alt text][image5]
 
-A browser window will appear showing the contents of the current directory.  Click on the file called "P1.ipynb".  Another browser window will appear displaying the notebook.  Follow the instructions in the notebook to complete the project.  
 
-**Step 3:** Complete the project and submit both the Ipython notebook and the project writeup
+### 2. Below are the short comings with the current implementation : 
 
+1. Have only used straight lines which do not track curves in the road.
+1. Yellow marking on white roads are very difficult to identify.  Reducing canny edge low_threshold adds a lot of noise to the image
+1. Tyre marks on white roads is adding to noise
+
+
+### 3. Possible improvements to the solution could be :
+
+1. Ability able to plot curved lines to handle curved lane
+1. Ability to identify yellow lanes on white road better
+1. A more precise way to filter out tyre markings and shadows
+
+
+---
+
+**Has been a fun project.  Very interesting.** 				  ~   Saravanan Moorthyrajan
+
+---
